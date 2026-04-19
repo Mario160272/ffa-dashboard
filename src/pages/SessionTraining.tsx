@@ -5,10 +5,12 @@ import {
 import Header from '../components/Header'
 import Card from '../components/Card'
 import Kpi from '../components/Kpi'
+import PlayerAvatar from '../components/PlayerAvatar'
 import { useGpsData } from '../hooks/useGpsData'
 import { fmt, fmtDate } from '../utils/format'
 import { isFullSession } from '../utils/excel'
 import { ampColor, ampType, parseSubject } from '../data/exercises'
+import { PLAYER_BY_NAME } from '../data/players'
 
 export default function SessionTraining() {
   const { data, loading, error } = useGpsData()
@@ -150,28 +152,46 @@ export default function SessionTraining() {
         )}
 
         {barData.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {([
-              ['Distance', 'dist', '#C9002B'],
-              ['HSR', 'hsr', '#500515'],
-              ['ACC', 'acc', '#917845'],
-              ['Met Power', 'mp', '#1A0008'],
-            ] as const).map(([label, key, color]) => (
-              <Card key={key} title={label}>
-                <div style={{ width: '100%', height: 220 }}>
-                  <ResponsiveContainer>
-                    <BarChart data={barData} margin={{ top: 4, right: 4, bottom: 40, left: 0 }}>
-                      <CartesianGrid stroke="#EEE" vertical={false} />
-                      <XAxis dataKey="name" tick={{ fontSize: 9 }} angle={-45} textAnchor="end" interval={0} height={60} />
-                      <YAxis tick={{ fontSize: 9 }} />
-                      <Tooltip />
-                      <Bar dataKey={key} fill={color} radius={[3, 3, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
+          <Card title="Par joueur" subtitle="Distance · HSR · ACC · Met Power">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {([
+                ['Distance', 'dist', '#C9002B'],
+                ['HSR', 'hsr', '#500515'],
+                ['ACC', 'acc', '#917845'],
+                ['Met Power', 'mp', '#1A0008'],
+              ] as const).map(([label, key, color]) => (
+                <div key={key}>
+                  <div className="text-[10px] uppercase tracking-widest text-black/50 font-bold mb-2">
+                    {label}
+                  </div>
+                  <div style={{ width: '100%', height: 220 }}>
+                    <ResponsiveContainer>
+                      <BarChart data={barData} margin={{ top: 4, right: 4, bottom: 40, left: 0 }}>
+                        <CartesianGrid stroke="#EEE" vertical={false} />
+                        <XAxis dataKey="name" tick={{ fontSize: 9 }} angle={-45} textAnchor="end" interval={0} height={60} />
+                        <YAxis tick={{ fontSize: 9 }} />
+                        <Tooltip />
+                        <Bar dataKey={key} fill={color} radius={[3, 3, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
                 </div>
-              </Card>
-            ))}
-          </div>
+              ))}
+            </div>
+            <div className="mt-3 flex flex-wrap gap-2 justify-center border-t border-black/5 pt-3">
+              {fullRows.map((r) => {
+                const p = PLAYER_BY_NAME[r.Name]
+                return (
+                  <div key={r.Name} className="flex flex-col items-center w-14" title={r.Name}>
+                    <PlayerAvatar name={r.Name} prenom={p?.prenom} photo={p?.photo ?? null} size={28} />
+                    <div className="text-[9px] text-black/60 truncate w-full text-center mt-0.5">
+                      {r.Name}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </Card>
         )}
 
         {exerciseGroups.length > 0 && (

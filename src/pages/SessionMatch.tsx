@@ -5,9 +5,11 @@ import {
 import Header from '../components/Header'
 import Card from '../components/Card'
 import Kpi from '../components/Kpi'
+import PlayerAvatar from '../components/PlayerAvatar'
 import { useGpsData } from '../hooks/useGpsData'
 import { fmt, fmtDate } from '../utils/format'
 import { isFullSession } from '../utils/excel'
+import { PLAYER_BY_NAME } from '../data/players'
 
 export default function SessionMatch() {
   const { data, loading, error } = useGpsData()
@@ -143,9 +145,16 @@ export default function SessionMatch() {
                   </tr>
                 </thead>
                 <tbody>
-                  {sorted.map((r) => (
+                  {sorted.map((r) => {
+                    const p = PLAYER_BY_NAME[r.Name]
+                    return (
                     <tr key={r.Name} className="border-b border-black/5">
-                      <td className="py-2 px-2 font-semibold">{r.Name}</td>
+                      <td className="py-2 px-2 font-semibold">
+                        <span className="inline-flex items-center gap-2">
+                          <PlayerAvatar name={r.Name} prenom={p?.prenom} photo={p?.photo ?? null} size={26} />
+                          {r.Name}
+                        </span>
+                      </td>
                       <td
                         className="py-2 px-2 text-right"
                         style={{ color: r.Distanza >= distTop25 ? '#C9002B' : undefined, fontWeight: r.Distanza >= distTop25 ? 700 : 400 }}
@@ -160,7 +169,8 @@ export default function SessionMatch() {
                       <td className="py-2 px-2 text-right">{r.RPE ? fmt(r.RPE, 1) : '—'}</td>
                       <td className="py-2 px-2 text-right">{fmt(r['TOTAL TIME'], 0)}′</td>
                     </tr>
-                  ))}
+                    )
+                  })}
                 </tbody>
               </table>
             </div>

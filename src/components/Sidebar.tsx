@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 
 const NAV = [
+  { n: '00', label: 'Dashboard',         to: '/' },
   { n: '01', label: 'Session Match',     to: '/session-match' },
   { n: '02', label: 'Inside Training',   to: '/session-training' },
   { n: '03', label: 'Week Analysis',     to: '/week-analysis' },
@@ -36,6 +37,7 @@ export default function Sidebar() {
           <NavLink
             key={item.to}
             to={item.to}
+            end={item.to === '/'}
             className={({ isActive }) =>
               `flex items-center gap-3 px-5 py-2.5 text-[13px] font-medium transition-colors border-l-[3px] ${
                 isActive

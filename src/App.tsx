@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout'
+import Home from './pages/Home'
 import SessionMatch from './pages/SessionMatch'
 import SessionTraining from './pages/SessionTraining'
 import WeekAnalysis from './pages/WeekAnalysis'
@@ -13,7 +14,7 @@ export default function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<Navigate to="/session-match" replace />} />
+        <Route path="/" element={<Home />} />
         <Route path="/session-match" element={<SessionMatch />} />
         <Route path="/session-training" element={<SessionTraining />} />
         <Route path="/week-analysis" element={<WeekAnalysis />} />
@@ -22,7 +23,7 @@ export default function App() {
         <Route path="/repartition" element={<Repartition />} />
         <Route path="/presences" element={<Presences />} />
         <Route path="/testing" element={<Testing />} />
-        <Route path="*" element={<Navigate to="/session-match" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
   )
