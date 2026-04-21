@@ -1,5 +1,8 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend,
+} from 'recharts'
 import Card from '../components/Card'
 import Kpi from '../components/Kpi'
 import PlayerAvatar from '../components/PlayerAvatar'
@@ -75,6 +78,32 @@ export default function Home() {
       return { ...p, comb, zone: getZone(comb) }
     })
   }, [data, summary.refDate])
+
+  const monthlySeries = useMemo(() => {
+    const full = filterFullSessions(data)
+    const map = new Map<string, { month: string; match: number; train: number }>()
+    for (const r of full) {
+      if (!r.Date) continue
+      const m = r.Date.slice(0, 7)
+      if (!map.has(m)) map.set(m, { month: m, match: 0, train: 0 })
+      const b = map.get(m)!
+      if (r.IS_MATCH === 'MATCH') b.match += 1
+      else b.train += 1
+    }
+    // Unique days, not sessions — group by date first
+    const byMonth = new Map<string, { month: string; match: Set<string>; train: Set<string> }>()
+    for (const r of full) {
+      if (!r.Date) continue
+      const m = r.Date.slice(0, 7)
+      if (!byMonth.has(m)) byMonth.set(m, { month: m, match: new Set(), train: new Set() })
+      const b = byMonth.get(m)!
+      if (r.IS_MATCH === 'MATCH') b.match.add(r.Date)
+      else b.train.add(r.Date)
+    }
+    return Array.from(byMonth.values())
+      .sort((a, b) => a.month.localeCompare(b.month))
+      .map((e) => ({ month: e.month.slice(2), match: e.match.size, train: e.train.size }))
+  }, [data])
 
   return (
     <>
@@ -210,6 +239,23 @@ export default function Home() {
               <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#BCC8D4' }} />
               Inconnu
             </span>
+          </div>
+        </Card>
+
+        {/* Monthly activity chart */}
+        <Card title="Activité mensuelle" subtitle="Nombre de jours de matchs et d'entraînements par mois">
+          <div style={{ width: '100%', height: 260 }}>
+            <ResponsiveContainer>
+              <BarChart data={monthlySeries} margin={{ top: 10, right: 10, bottom: 10, left: 0 }}>
+                <CartesianGrid stroke="#EEE" vertical={false} />
+                <XAxis dataKey="month" tick={{ fontSize: 10, fontFamily: 'DM Mono' }} />
+                <YAxis tick={{ fontSize: 10, fontFamily: 'DM Mono' }} />
+                <Tooltip />
+                <Legend wrapperStyle={{ fontSize: 11 }} />
+                <Bar dataKey="train" name="Entraînements" stackId="a" fill="#BCC8D4" radius={[0, 0, 0, 0]} />
+                <Bar dataKey="match" name="Matchs" stackId="a" fill="#C9002B" radius={[3, 3, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </Card>
 

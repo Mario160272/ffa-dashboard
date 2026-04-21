@@ -179,10 +179,10 @@ export default function SessionTraining() {
               ))}
             </div>
             <div className="mt-3 flex flex-wrap gap-2 justify-center border-t border-black/5 pt-3">
-              {fullRows.map((r) => {
+              {fullRows.map((r, idx) => {
                 const p = PLAYER_BY_NAME[r.Name]
                 return (
-                  <div key={r.Name} className="flex flex-col items-center w-14" title={r.Name}>
+                  <div key={`${r.Name}-${idx}`} className="flex flex-col items-center w-14" title={r.Name}>
                     <PlayerAvatar name={r.Name} prenom={p?.prenom} photo={p?.photo ?? null} size={28} />
                     <div className="text-[9px] text-black/60 truncate w-full text-center mt-0.5">
                       {r.Name}

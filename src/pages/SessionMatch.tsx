@@ -145,10 +145,10 @@ export default function SessionMatch() {
                   </tr>
                 </thead>
                 <tbody>
-                  {sorted.map((r) => {
+                  {sorted.map((r, idx) => {
                     const p = PLAYER_BY_NAME[r.Name]
                     return (
-                    <tr key={r.Name} className="border-b border-black/5">
+                    <tr key={`${r.Name}-${idx}`} className="border-b border-black/5">
                       <td className="py-2 px-2 font-semibold">
                         <span className="inline-flex items-center gap-2">
                           <PlayerAvatar name={r.Name} prenom={p?.prenom} photo={p?.photo ?? null} size={26} />
