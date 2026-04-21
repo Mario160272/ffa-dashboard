@@ -95,7 +95,7 @@ export default function Home() {
           />
           <div className="flex-1">
             <div className="text-[11px] tracking-[0.35em] font-bold uppercase text-white/70">
-              Football Francophone Amateur · Pôle Excellence
+              Football Francophone Amateur · Pôle Elite
             </div>
             <h1 className="mt-1 text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
               Dashboard 2025 — 2026
@@ -165,7 +165,7 @@ export default function Home() {
         </div>
 
         {/* Roster */}
-        <Card title="Effectif Pôle Excellence" subtitle={`${PLAYERS.length} joueurs · statut ACWR live`}>
+        <Card title="Effectif Pôle Elite" subtitle={`${PLAYERS.length} joueurs · statut ACWR live`}>
           <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-8 gap-3">
             {playerZones.map((p) => {
               const col = zoneColor(p.zone)
@@ -219,7 +219,7 @@ export default function Home() {
             <div className="md:col-span-3 h-[320px]">
               <img
                 src="/assets/EQUIPE_jaune.jpg"
-                alt="Pôle Excellence FFA"
+                alt="Pôle Elite FFA"
                 className="w-full h-full object-cover rounded-l-lg"
               />
             </div>
@@ -242,7 +242,7 @@ export default function Home() {
               </div>
               <div className="mt-6 text-[11px] text-black/60 leading-relaxed">
                 Suivi quotidien des charges d'entraînement, prévention des blessures et
-                optimisation de la performance physique des joueurs du Pôle Excellence.
+                optimisation de la performance physique des joueurs du Pôle Elite.
                 Méthodologie : GPS K-Sport, ACWR Gabbett 60/40, Match Model normalisé /80 min.
               </div>
               <div className="mt-auto pt-4 text-[10px] text-black/40">

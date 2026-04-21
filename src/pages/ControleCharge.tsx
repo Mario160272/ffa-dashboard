@@ -172,7 +172,7 @@ export default function ControleCharge() {
                 <PlayerAvatar name={player.name} prenom={player.prenom} photo={player.photo} size={72} />
                 <div className="flex-1">
                   <div className="text-2xl font-bold">{player.prenom} {player.name}</div>
-                  <div className="text-xs text-black/50">Pôle Excellence — 25/26</div>
+                  <div className="text-xs text-black/50">Pôle Elite — 25/26</div>
                 </div>
                 <div className="text-right">
                   <div className="text-[10px] uppercase tracking-widest text-black/50">Forme</div>

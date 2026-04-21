@@ -8,17 +8,66 @@ html, body, #root {
   padding: 0;
   background: #F5F5F5;
   color: #202020;
-  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  box-sizing: border-box;
+* { box-sizing: border-box; }
+
+/* DM Mono for all numeric values */
+.num, .mono, .kpi-value, table td.num, table th.num {
+  font-family: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-feature-settings: 'tnum';
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: #F5F5F5; }
-::-webkit-scrollbar-thumb { background: #BCC8D4; border-radius: 6px; }
-::-webkit-scrollbar-thumb:hover { background: #C9002B; }
+/* Scrollbar — 4px rouge 30% */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(201, 0, 43, 0.3);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(201, 0, 43, 0.6); }
+
+/* Recharts tooltip override — fond sombre FFA */
+.recharts-default-tooltip {
+  background: #1A0008 !important;
+  border: 1px solid rgba(201, 0, 43, 0.3) !important;
+  border-radius: 6px !important;
+  color: #FFFFFF !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 11px !important;
+  padding: 8px 10px !important;
+}
+.recharts-tooltip-label { color: #FFFFFF !important; font-weight: 600 !important; }
+.recharts-tooltip-item { color: #FFFFFF !important; }
+
+/* KPI card hover */
+.kpi-card {
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  position: relative;
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--kpi-accent, #C9002B);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px -8px rgba(201, 0, 43, 0.25);
+}
+
+/* Sidebar active dot pulse */
+.nav-active-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #C9002B;
+  box-shadow: 0 0 0 0 rgba(201, 0, 43, 0.6);
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
