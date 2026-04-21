@@ -6,6 +6,7 @@ import Header from '../components/Header'
 import Card from '../components/Card'
 import Kpi from '../components/Kpi'
 import PlayerAvatar from '../components/PlayerAvatar'
+import CalendarSelector, { type DayEntry } from '../components/CalendarSelector'
 import { useGpsData } from '../hooks/useGpsData'
 import { fmt, fmtDate } from '../utils/format'
 import { isFullSession } from '../utils/excel'
@@ -21,6 +22,18 @@ export default function SessionTraining() {
       if (r.IS_MATCH === 'TRAINING' && isFullSession(r.subjects) && r.Date) s.add(r.Date)
     }
     return Array.from(s).sort()
+  }, [data])
+
+  const entries: DayEntry[] = useMemo(() => {
+    const seen = new Map<string, DayEntry>()
+    for (const r of data) {
+      if (!r.Date || !isFullSession(r.subjects)) continue
+      const kind = r.IS_MATCH === 'MATCH' ? 'MATCH' : 'TRAINING'
+      if (!seen.has(r.Date)) {
+        seen.set(r.Date, { date: r.Date, kind, duration: r['TOTAL TIME'] })
+      }
+    }
+    return Array.from(seen.values())
   }, [data])
 
   const [selected, setSelected] = useState<string>('')
@@ -106,30 +119,25 @@ export default function SessionTraining() {
     <>
       <Header
         title="Inside Training"
-        subtitle="Team average + bar charts joueurs + détail exercices"
+        subtitle={chosen ? fmtDate(chosen) : 'Team average + détail exercices'}
         badge="02"
-        right={
-          <select
-            value={chosen}
-            onChange={(e) => setSelected(e.target.value)}
-            className="bg-white/10 border border-white/20 text-white rounded px-3 py-1.5 text-sm"
-          >
-            {trainingDates.length === 0 && <option>— aucun entraînement —</option>}
-            {trainingDates.map((d) => (
-              <option key={d} value={d} className="text-black">
-                {fmtDate(d)}
-              </option>
-            ))}
-          </select>
-        }
       />
 
       <div className="p-6 space-y-6">
         {loading && <div className="text-sm text-black/50">Chargement GPS…</div>}
         {error && <div className="text-sm text-ffa-red">Erreur : {error}</div>}
 
-        {kpi && (
-          <Card title="Team Average">
+        <div className="flex flex-col lg:flex-row gap-6 items-start">
+          <CalendarSelector
+            entries={entries}
+            value={chosen}
+            onChange={setSelected}
+            kindFilter="TRAINING"
+          />
+
+          {kpi && (
+            <div className="flex-1 w-full">
+              <Card title="Team Average">
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
               <Kpi label="Durée" value={fmt(kpi.dur, 0)} unit="min" accent="neutral" />
               <Kpi label="Distance" value={fmt(kpi.dist, 0)} unit="m" accent="red" />
@@ -147,9 +155,11 @@ export default function SessionTraining() {
                 hint={ampType(kpi.mpAvg)}
               />
               <Kpi label="RPE moy." value={fmt(kpi.rpe, 1)} unit="/10" accent="neutral" />
+                </div>
+              </Card>
             </div>
-          </Card>
-        )}
+          )}
+        </div>
 
         {barData.length > 0 && (
           <Card title="Par joueur" subtitle="Distance · HSR · ACC · Met Power">
