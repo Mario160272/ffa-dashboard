@@ -1,98 +1,272 @@
 [
   {
-    "date": "2025-08-07",
-    "opponent": "PRESEASON"
-  },
-  {
     "date": "2025-08-13",
-    "opponent": "VISE"
+    "opponent": "VISE",
+    "category": "FRIENDLY",
+    "gf": 7,
+    "ga": 1,
+    "result": "V",
+    "prepCat": "PHYSICAL",
+    "prepSub": "AEROBIC"
   },
   {
     "date": "2025-08-20",
-    "opponent": "COINTE"
+    "opponent": "COINTE",
+    "category": "FRIENDLY",
+    "gf": 5,
+    "ga": 1,
+    "result": "V",
+    "prepCat": "PHYSICAL",
+    "prepSub": "AEROBIC"
   },
   {
     "date": "2025-08-27",
-    "opponent": "RFC SERAING"
+    "opponent": "RFC SERAING",
+    "category": "FRIENDLY",
+    "gf": 3,
+    "ga": 6,
+    "result": "D",
+    "prepCat": "PHYSICAL",
+    "prepSub": "AEROBIC"
   },
   {
     "date": "2025-09-03",
-    "opponent": "RWDM"
+    "opponent": "RWDM",
+    "category": "FRIENDLY",
+    "gf": 3,
+    "ga": 3,
+    "result": "N",
+    "prepCat": "PHYSICAL",
+    "prepSub": "AEROBIC"
   },
   {
     "date": "2025-09-10",
-    "opponent": "DUDELANGE"
+    "opponent": "DUDELANGE",
+    "category": "FRIENDLY",
+    "gf": 1,
+    "ga": 2,
+    "result": "D",
+    "prepCat": "PHYSICAL",
+    "prepSub": "AEROBIC"
   },
   {
     "date": "2025-09-17",
-    "opponent": "ROYAL ANTWERP FC"
+    "opponent": "ROYAL ANTWERP FC",
+    "category": "FRIENDLY",
+    "gf": 2,
+    "ga": 1,
+    "result": "V",
+    "prepCat": "PHYSICAL",
+    "prepSub": "AEROBIC"
   },
   {
     "date": "2025-09-24",
-    "opponent": "OH LEUVEN"
+    "opponent": "OH LEUVEN",
+    "category": "FRIENDLY",
+    "gf": 0,
+    "ga": 3,
+    "result": "D",
+    "prepCat": "PHYSICAL",
+    "prepSub": "AEROBIC"
   },
   {
     "date": "2025-10-01",
-    "opponent": "RFC LIEGE"
+    "opponent": "RFC LIEGE",
+    "category": "FRIENDLY",
+    "gf": 5,
+    "ga": 2,
+    "result": "V",
+    "prepCat": "PHYSICAL",
+    "prepSub": "AEROBIC"
   },
   {
     "date": "2025-10-07",
-    "opponent": "SL16"
+    "opponent": "SL16",
+    "category": "FRIENDLY",
+    "gf": 0,
+    "ga": 3,
+    "result": "D",
+    "prepCat": "PHYSICAL",
+    "prepSub": "AEROBIC"
   },
   {
     "date": "2025-10-15",
-    "opponent": "KAS EUPEN"
+    "opponent": "KAS EUPEN",
+    "category": "FRIENDLY",
+    "gf": 0,
+    "ga": 3,
+    "result": "D",
+    "prepCat": "PHYSICAL",
+    "prepSub": "AEROBIC"
   },
   {
     "date": "2025-10-22",
-    "opponent": "STVV"
+    "opponent": "STVV",
+    "category": "FRIENDLY",
+    "gf": 2,
+    "ga": 2,
+    "result": "N",
+    "prepCat": "PHYSICAL",
+    "prepSub": "SPEED"
   },
   {
     "date": "2025-11-05",
-    "opponent": "RAAL"
+    "opponent": "RAAL",
+    "category": "FRIENDLY",
+    "gf": 1,
+    "ga": 1,
+    "result": "N",
+    "prepCat": "PHYSICAL",
+    "prepSub": "SPEED"
   },
   {
     "date": "2025-11-12",
-    "opponent": "SPORTING CHARLEROI"
+    "opponent": "SPORTING CHARLEROI",
+    "category": "FRIENDLY",
+    "gf": 1,
+    "ga": 1,
+    "result": "N",
+    "prepCat": "PHYSICAL",
+    "prepSub": "SPEED"
   },
   {
     "date": "2025-11-19",
-    "opponent": "OLYMPIC CHARLEROI"
+    "opponent": "OLYMPIC CHARLEROI",
+    "category": "FRIENDLY",
+    "gf": 2,
+    "ga": 3,
+    "result": "D",
+    "prepCat": "PHYSICAL",
+    "prepSub": "NEURO MUSCULAR"
   },
   {
     "date": "2025-11-26",
-    "opponent": "CERCLE BRUGGE"
+    "opponent": "CERCLE BRUGGE",
+    "category": "FRIENDLY",
+    "gf": 1,
+    "ga": 2,
+    "result": "D",
+    "prepCat": "PHYSICAL",
+    "prepSub": "NEURO MUSCULAR"
   },
   {
     "date": "2026-01-14",
-    "opponent": "UNION"
+    "opponent": "UNION",
+    "category": "FRIENDLY",
+    "gf": null,
+    "ga": null,
+    "result": null,
+    "prepCat": "PHYSICAL",
+    "prepSub": "MOBILITY"
   },
   {
     "date": "2026-01-21",
-    "opponent": "KAS EUPEN"
+    "opponent": "KAS EUPEN",
+    "category": "FRIENDLY",
+    "gf": 1,
+    "ga": 1,
+    "result": "N",
+    "prepCat": "TECHNICAL",
+    "prepSub": "PASSING"
   },
   {
     "date": "2026-01-28",
-    "opponent": "RFC LIEGE"
+    "opponent": "RFC LIEGE",
+    "category": "FRIENDLY",
+    "gf": 4,
+    "ga": 2,
+    "result": "V",
+    "prepCat": "TECHNICAL",
+    "prepSub": "PASSING"
+  },
+  {
+    "date": "2026-02-03",
+    "opponent": "DUDELANGE",
+    "category": "FRIENDLY",
+    "gf": 2,
+    "ga": 2,
+    "result": "N",
+    "prepCat": "TECHNICAL",
+    "prepSub": "PASSING"
   },
   {
     "date": "2026-02-11",
-    "opponent": "LIERSE"
+    "opponent": "LIERSE",
+    "category": "FRIENDLY",
+    "gf": 1,
+    "ga": 2,
+    "result": "D",
+    "prepCat": "TECHNICAL",
+    "prepSub": "PASSING"
   },
   {
     "date": "2026-03-04",
-    "opponent": "ANTWERP"
+    "opponent": "ANTWERP",
+    "category": "FRIENDLY",
+    "gf": 2,
+    "ga": 10,
+    "result": "D",
+    "prepCat": "TECHNICAL",
+    "prepSub": "PASSING"
   },
   {
     "date": "2026-03-11",
-    "opponent": "RFC SERAING"
+    "opponent": "RFC SERAING",
+    "category": "FRIENDLY",
+    "gf": null,
+    "ga": null,
+    "result": null,
+    "prepCat": "TECHNICAL",
+    "prepSub": "PASSING"
   },
   {
     "date": "2026-03-25",
-    "opponent": "RWDM"
+    "opponent": "RWDM",
+    "category": "FRIENDLY",
+    "gf": 0,
+    "ga": 1,
+    "result": "D",
+    "prepCat": "TECHNICAL",
+    "prepSub": "PASSING"
   },
   {
     "date": "2026-04-01",
-    "opponent": "CHARLEROI"
+    "opponent": "SPORTING CHARLEROI",
+    "category": "FRIENDLY",
+    "gf": 2,
+    "ga": 3,
+    "result": "D",
+    "prepCat": "TECHNICAL",
+    "prepSub": "PASSING"
+  },
+  {
+    "date": "2026-04-08",
+    "opponent": "UNION",
+    "category": "FRIENDLY",
+    "gf": 2,
+    "ga": 2,
+    "result": "N",
+    "prepCat": "TECHNICAL",
+    "prepSub": "FINISHING"
+  },
+  {
+    "date": "2026-04-15",
+    "opponent": "MVV",
+    "category": "FRIENDLY",
+    "gf": 5,
+    "ga": 0,
+    "result": "V",
+    "prepCat": "TACTICAL",
+    "prepSub": "SSG"
+  },
+  {
+    "date": "2026-04-22",
+    "opponent": "STVV",
+    "category": "FRIENDLY",
+    "gf": 3,
+    "ga": 0,
+    "result": "V",
+    "prepCat": "TACTICAL",
+    "prepSub": "MSG"
   }
 ]

@@ -5,6 +5,10 @@ export type DayEntry = {
   kind: 'MATCH' | 'TRAINING'
   opponent?: string | null
   duration?: number
+  // Optional match result data
+  gf?: number | null
+  ga?: number | null
+  result?: 'V' | 'D' | 'N' | null
 }
 
 type Props = {
@@ -78,7 +82,20 @@ export default function CalendarSelector({ entries, value, onChange, kindFilter 
     const d = e.date.slice(8, 10) + '/' + e.date.slice(5, 7)
     const letter = e.kind === 'MATCH' ? 'M' : 'T'
     const opp = e.opponent ? ` · vs ${e.opponent}` : ''
-    return `${d} · ${letter}${opp}`
+    const score = e.result && e.gf != null && e.ga != null
+      ? ` · ${e.gf}-${e.ga} ${e.result}`
+      : ''
+    return `${d} · ${letter}${opp}${score}`
+  }
+
+  function matchBg(e: DayEntry): string {
+    if (e.kind !== 'MATCH') return '#185FA5'
+    switch (e.result) {
+      case 'V': return '#1D9E75'
+      case 'D': return '#C9002B'
+      case 'N': return '#917845'
+      default:  return '#500515' // dark red for upcoming/unknown match
+    }
   }
 
   const sortedEntries = useMemo(() => [...filtered].sort((a, b) => a.date.localeCompare(b.date)), [filtered])
@@ -132,9 +149,9 @@ export default function CalendarSelector({ entries, value, onChange, kindFilter 
           let color = '#BCC8D4'
           let letter = ''
           if (e?.kind === 'MATCH') {
-            bg = '#C9002B'
+            bg = matchBg(e)
             color = '#FFF'
-            letter = 'M'
+            letter = e.result ?? 'M'
           } else if (e?.kind === 'TRAINING') {
             bg = '#185FA5'
             color = '#FFF'
@@ -165,23 +182,36 @@ export default function CalendarSelector({ entries, value, onChange, kindFilter 
         <div
           className="mt-2 p-2 rounded text-[11px]"
           style={{
-            background: selectedEntry.kind === 'MATCH' ? 'rgba(201,0,43,0.06)' : 'rgba(24,95,165,0.05)',
-            borderLeft: `3px solid ${selectedEntry.kind === 'MATCH' ? '#C9002B' : '#185FA5'}`,
+            background: selectedEntry.kind === 'MATCH'
+              ? 'rgba(201,0,43,0.06)'
+              : 'rgba(24,95,165,0.05)',
+            borderLeft: `3px solid ${selectedEntry.kind === 'MATCH' ? matchBg(selectedEntry) : '#185FA5'}`,
           }}
         >
           <div className="flex items-center gap-2">
             <span
               className="inline-block px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-wider text-white"
-              style={{ background: selectedEntry.kind === 'MATCH' ? '#C9002B' : '#185FA5' }}
+              style={{ background: selectedEntry.kind === 'MATCH' ? matchBg(selectedEntry) : '#185FA5' }}
             >
               {selectedEntry.kind}
+              {selectedEntry.result ? ` · ${selectedEntry.result}` : ''}
             </span>
             <span className="font-mono text-black/70">
               {selectedEntry.date.slice(8, 10)}/{selectedEntry.date.slice(5, 7)}/{selectedEntry.date.slice(0, 4)}
             </span>
           </div>
           {selectedEntry.opponent && (
-            <div className="mt-1 font-semibold">vs {selectedEntry.opponent}</div>
+            <div className="mt-1 font-semibold flex items-baseline gap-2">
+              <span>vs {selectedEntry.opponent}</span>
+              {selectedEntry.result && selectedEntry.gf != null && selectedEntry.ga != null && (
+                <span
+                  className="text-[12px] font-mono font-bold"
+                  style={{ color: matchBg(selectedEntry) }}
+                >
+                  {selectedEntry.gf}-{selectedEntry.ga}
+                </span>
+              )}
+            </div>
           )}
           {selectedEntry.duration != null && selectedEntry.duration > 0 && (
             <div className="text-[10px] text-black/50 mono">durée {Math.round(selectedEntry.duration)}′</div>

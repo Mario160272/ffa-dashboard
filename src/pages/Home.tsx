@@ -8,8 +8,10 @@ import Kpi from '../components/Kpi'
 import PlayerAvatar from '../components/PlayerAvatar'
 import { PLAYERS } from '../data/players'
 import { useGpsData } from '../hooks/useGpsData'
+import { useConvalida } from '../hooks/useConvalida'
 import { isFullSession } from '../utils/excel'
 import { fmt, fmtDate } from '../utils/format'
+import { resultColor, summarizeSeason } from '../data/convalida'
 import {
   calcACWRCombined, calcACWRExternal, calcACWRInternal,
   filterFullSessions, getZone, zoneColor,
@@ -33,6 +35,15 @@ function mean(arr: number[]): number | null {
 
 export default function Home() {
   const { data, loading } = useGpsData()
+  const fixtures = useConvalida()
+  const seasonRecap = useMemo(() => summarizeSeason(fixtures), [fixtures])
+  const recentResults = useMemo(
+    () =>
+      fixtures
+        .filter((f) => f.result)
+        .slice(-8),
+    [fixtures],
+  )
 
   const summary = useMemo(() => {
     const full = filterFullSessions(data)
@@ -165,6 +176,98 @@ export default function Home() {
             hint="60/40"
           />
         </div>
+
+        {/* Bilan saison */}
+        {seasonRecap.played > 0 && (
+          <div className="bg-white rounded-lg border border-black/5 shadow-sm p-5">
+            <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
+              <div>
+                <div className="text-[11px] font-bold tracking-[0.18em] uppercase text-black/60">
+                  Bilan Saison 2025 — 2026
+                </div>
+                <div className="text-[10px] text-black/40 mono mt-0.5">
+                  {seasonRecap.played} matchs joués · {seasonRecap.upcoming} à venir
+                </div>
+              </div>
+              <div className="flex items-baseline gap-3">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-[28px] font-bold kpi-value mono" style={{ color: '#1D9E75' }}>
+                    {seasonRecap.v}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-widest text-black/50">V</span>
+                </div>
+                <div className="text-black/30">·</div>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-[28px] font-bold kpi-value mono" style={{ color: '#917845' }}>
+                    {seasonRecap.n}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-widest text-black/50">N</span>
+                </div>
+                <div className="text-black/30">·</div>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-[28px] font-bold kpi-value mono" style={{ color: '#C9002B' }}>
+                    {seasonRecap.d}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-widest text-black/50">D</span>
+                </div>
+              </div>
+              <div className="flex items-baseline gap-4">
+                <div>
+                  <div className="text-[9px] uppercase tracking-widest text-black/40">Buts</div>
+                  <div className="text-[16px] font-bold mono">
+                    <span className="text-ffa-red">{seasonRecap.gf}</span>
+                    <span className="text-black/30"> : </span>
+                    <span>{seasonRecap.ga}</span>
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[9px] uppercase tracking-widest text-black/40">Diff.</div>
+                  <div
+                    className="text-[16px] font-bold mono"
+                    style={{ color: seasonRecap.diff > 0 ? '#1D9E75' : seasonRecap.diff < 0 ? '#C9002B' : '#917845' }}
+                  >
+                    {seasonRecap.diff > 0 ? '+' : ''}{seasonRecap.diff}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[9px] uppercase tracking-widest text-black/40">Points</div>
+                  <div className="text-[16px] font-bold mono">{seasonRecap.points}</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Recent results timeline */}
+            {recentResults.length > 0 && (
+              <div>
+                <div className="text-[10px] uppercase tracking-widest text-black/40 mb-2">
+                  Derniers résultats
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {recentResults.map((m) => (
+                    <div
+                      key={m.date}
+                      className="flex flex-col items-center px-2 py-1.5 rounded text-[10px]"
+                      style={{
+                        background: resultColor(m.result),
+                        color: '#FFF',
+                        minWidth: 96,
+                      }}
+                      title={`${fmtDate(m.date)} · vs ${m.opponent} · ${m.gf}-${m.ga} ${m.result}`}
+                    >
+                      <span className="text-[8px] mono opacity-90 tracking-wider uppercase">
+                        {m.date.slice(5).replace('-', '/')}
+                      </span>
+                      <span className="font-bold truncate max-w-[88px]">{m.opponent}</span>
+                      <span className="font-mono font-bold text-[12px]">
+                        {m.gf}-{m.ga} {m.result}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Quick links */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

@@ -12,7 +12,7 @@ import { useConvalida } from '../hooks/useConvalida'
 import { fmt, fmtDate } from '../utils/format'
 import { isFullSession } from '../utils/excel'
 import { PLAYER_BY_NAME } from '../data/players'
-import { opponentByDate } from '../data/convalida'
+import { fixtureByDate, opponentByDate, resultLabel } from '../data/convalida'
 
 export default function SessionMatch() {
   const { data, loading, error } = useGpsData()
@@ -24,11 +24,15 @@ export default function SessionMatch() {
       if (!r.Date || !isFullSession(r.subjects)) continue
       const kind = r.IS_MATCH === 'MATCH' ? 'MATCH' : 'TRAINING'
       if (!seen.has(r.Date)) {
+        const fx = kind === 'MATCH' ? fixtureByDate(fixtures, r.Date) : null
         seen.set(r.Date, {
           date: r.Date,
           kind,
-          opponent: kind === 'MATCH' ? opponentByDate(fixtures, r.Date) : null,
+          opponent: fx?.opponent ?? null,
           duration: r['TOTAL TIME'],
+          gf: fx?.gf ?? null,
+          ga: fx?.ga ?? null,
+          result: fx?.result ?? null,
         })
       }
     }
@@ -43,6 +47,7 @@ export default function SessionMatch() {
   const [selected, setSelected] = useState<string>('')
   const chosen = selected || matchDates[matchDates.length - 1] || ''
   const opponent = opponentByDate(fixtures, chosen)
+  const fixture = fixtureByDate(fixtures, chosen)
 
   const rows = useMemo(
     () => data.filter((r) => r.Date === chosen && r.IS_MATCH === 'MATCH' && isFullSession(r.subjects)),
@@ -80,8 +85,16 @@ export default function SessionMatch() {
   return (
     <>
       <Header
-        title={`Session Match${opponent ? ` · vs ${opponent}` : ''}`}
-        subtitle={chosen ? fmtDate(chosen) : 'Performance équipe — analyse par match'}
+        title={
+          opponent
+            ? `Session Match · vs ${opponent}${fixture?.result && fixture.gf != null && fixture.ga != null ? ` · ${fixture.gf}-${fixture.ga} ${fixture.result}` : ''}`
+            : 'Session Match'
+        }
+        subtitle={
+          chosen
+            ? `${fmtDate(chosen)}${fixture?.result ? ' · ' + resultLabel(fixture.result) : ''}`
+            : 'Performance équipe — analyse par match'
+        }
         badge="01"
       />
 

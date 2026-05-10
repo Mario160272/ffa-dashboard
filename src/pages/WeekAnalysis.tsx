@@ -12,7 +12,7 @@ import { useConvalida } from '../hooks/useConvalida'
 import { fmt, fmtDate, mondayOf, shortDate } from '../utils/format'
 import { isFullSession } from '../utils/excel'
 import { PLAYER_BY_NAME, PLAYERS } from '../data/players'
-import { opponentByDate } from '../data/convalida'
+import { fixtureByDate, opponentByDate, resultColor } from '../data/convalida'
 import {
   aggregateByWeek, computeMatchRef80, microCycle, teamAveragePerSession,
 } from '../utils/weekAnalysis'
@@ -137,6 +137,7 @@ export default function WeekAnalysis() {
   )
 
   const opponent = opponentByDate(fixtures, referenceMatch)
+  const matchFixture = fixtureByDate(fixtures, referenceMatch)
 
   // Saison bar chart : distances par semaine, rouge = semaine avec match
   const seasonBars = useMemo(
@@ -309,7 +310,7 @@ export default function WeekAnalysis() {
             title="Microcycle"
             subtitle={
               referenceMatch
-                ? `MD-5 → MATCH${opponent ? ` vs ${opponent}` : ''} · ${fmtDate(referenceMatch)}`
+                ? `MD-5 → MATCH${opponent ? ` vs ${opponent}` : ''}${matchFixture?.result && matchFixture.gf != null ? ` · ${matchFixture.gf}-${matchFixture.ga} ${matchFixture.result}` : ''} · ${fmtDate(referenceMatch)}`
                 : 'Pas de match trouvé'
             }
           >
@@ -317,14 +318,18 @@ export default function WeekAnalysis() {
               {cycle.map((slot, i) => {
                 const col = mdColor(slot)
                 const isMatch = slot.dayOffset === 0
+                // Match cell uses result color (V/D/N) when available, else dark red
+                const matchBg = isMatch
+                  ? (matchFixture?.result ? resultColor(matchFixture.result) : '#C9002B')
+                  : '#FFF'
                 return (
                   <div
                     key={i}
                     className="rounded-lg p-3 text-center relative"
                     style={{
-                      background: isMatch ? '#C9002B' : '#FFF',
+                      background: matchBg,
                       color: isMatch ? '#FFF' : '#202020',
-                      border: `1px solid ${isMatch ? '#C9002B' : 'rgba(0,0,0,0.08)'}`,
+                      border: `1px solid ${isMatch ? matchBg : 'rgba(0,0,0,0.08)'}`,
                       borderLeft: `3px solid ${col}`,
                     }}
                   >
@@ -344,6 +349,11 @@ export default function WeekAnalysis() {
                     {isMatch && opponent && (
                       <div className="mt-1 text-[9px] font-bold tracking-wider uppercase opacity-90">
                         vs {opponent}
+                      </div>
+                    )}
+                    {isMatch && matchFixture?.result && matchFixture.gf != null && (
+                      <div className="mt-0.5 text-[14px] font-bold mono">
+                        {matchFixture.gf}-{matchFixture.ga} {matchFixture.result}
                       </div>
                     )}
                   </div>
